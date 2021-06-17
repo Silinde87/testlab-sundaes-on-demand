@@ -1,5 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import SummaryForm from './../SummaryForm';
+
+
 
 describe('Checkbox functionality', () => {
 	test('Initial state', () => {
@@ -23,11 +26,33 @@ describe('Checkbox functionality', () => {
 		expect(confirmButton).toBeDisabled();
 
 		//Checks button is enable when click on checkbox
-		fireEvent.click(checkbox);
+		userEvent.click(checkbox);
 		expect(confirmButton).toBeEnabled();
 
 		//Checks button is disabled when click on checkbox again
-		fireEvent.click(checkbox);
+		userEvent.click(checkbox);
 		expect(confirmButton).toBeDisabled();
 	});
 });
+
+describe('Popover functionality', () => {
+    test('responds to hover and unhover', () => {
+        render(<SummaryForm />);
+        
+        //popover starts out hidden
+        const nullPopover = screen.queryByText(/no ice cream will actually be delivered/i);
+        expect(nullPopover).not.toBeInTheDocument();
+
+        //popover appears upon mouseover of checkbox label
+        const termsAndConditions = screen.getByText(/terms and conditions/i);
+        userEvent.hover(termsAndConditions);
+
+        const popover = screen.getByText(/no ice cream will actually be delivered/i);
+        expect(popover).toBeInTheDocument();
+
+        //popover disappears when we mouse out
+        userEvent.unhover(termsAndConditions);
+        const nullPopoverAgain = screen.queryByText(/no ice cream will actually be delivered/i);
+        expect(nullPopoverAgain).not.toBeInTheDocument();
+    })
+})
