@@ -14,7 +14,7 @@ const Home = () => (
 			></script>
 			<script>var Alert = ReactBootstrap.Alert;</script>
 		</Head>
-		<button>Change to Midnight Blue</button>
+		
 	</div>
 );
 
